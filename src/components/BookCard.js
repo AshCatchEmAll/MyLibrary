@@ -26,11 +26,20 @@ import {
   UpdateRounded,
 } from "@material-ui/icons";
 import db from "../firebase/firestore";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
 
 const useStyles = makeStyles((theme) => ({
+  media: {
+    height: 140,
+  },
   root: {
     backgroundColor: theme.palette.background.paper,
     width: 500,
+
     position: "relative",
     minHeight: 200,
   },
@@ -51,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
     height: "50px",
   },
   paper: {
-    height: "100px",
+    height: "200px",
 
     alignContent: "center",
   },
@@ -65,11 +74,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 function BookCard(props) {
-  const [open, setOpen] = useState(false);
+ 
   const classes = useStyles();
-  function handleBookClick() {
-    setOpen(true);
-  }
+ 
 
   async function handleBookUpdateClick() {
     console.log(props.element["createdAt"], props.element["name"]);
@@ -80,67 +87,74 @@ function BookCard(props) {
         read: !props.element["read"],
       });
     await props.refreshBooks();
-    setOpen(false);
+   
   }
 
   async function handleDeleteBook() {
     await db
       .collection("/Books")
-      .where("owner", "==", props.user["uid"])
+
       .doc(props.element["createdAt"].toString())
       .delete();
     await props.refreshBooks();
-    setOpen(false);
+   
   }
 
-  function handleClose() {
-    setOpen(false);
-  }
+  
   console.log(props.element);
   return (
     <>
       <Grid
         item
-        xs={3}
+        justify="center"
+        xs={12}
+        md={6}
         spacing={3}
         alignItems="center"
-        onClick={handleBookClick}
+        
       >
-        <Paper className={classes.paper}>
-          <Typography>{props.element["name"]} </Typography>
-
-          <Typography>
-            {props.element["read"] === true ? "true" : "false"}
-          </Typography>
-        </Paper>
+    
+        <MediaCard
+          handleBookUpdateClick={handleBookUpdateClick}
+          handleDeleteBook={handleDeleteBook}
+          authorName={props.element["authorName"]}
+          name={props.element["name"]}
+          read={props.element["read"]}
+        />
       </Grid>
-      <Dialog
-        onClose={handleClose}
-        aria-labelledby="simple-dialog-title"
-        open={open}
-      >
-        <DialogTitle id="simple-dialog-title">Book Sesttings</DialogTitle>
-        <List>
-          <ListItem autoFocus button onClick={handleDeleteBook}>
-            <ListItemAvatar>
-              <Avatar>
-                <DeleteForever />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Delete book" />
-          </ListItem>
-          <ListItem autoFocus button onClick={handleBookUpdateClick}>
-            <ListItemAvatar>
-              <Avatar>
-                <UpdateRounded />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Update read status" />
-          </ListItem>
-        </List>
-      </Dialog>
+      
     </>
   );
 }
-
+function MediaCard(props) {
+  return (
+    <Card>
+      <CardActionArea>
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            {props.name}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {props.authorName}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {props.read === true? "Read": "Unread"}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
+        <Button size="small" color="primary" onClick={props.handleDeleteBook}>
+          Delete
+        </Button>
+        <Button
+          size="small"
+          color="primary"
+          onClick={props.handleBookUpdateClick}
+        >
+          Update status
+        </Button>
+      </CardActions>
+    </Card>
+  );
+}
 export default BookCard;

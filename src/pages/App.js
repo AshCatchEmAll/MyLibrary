@@ -1,4 +1,11 @@
-import "./App.css";
+import "../App.css";
+
+import "firebase/auth";
+
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import BookListPage from "../components/BookListPage";
+import AuthenticatePage from "./AuthenticatePage";
+import HomePage from "./Homepage";
 import {
   FirebaseAuthProvider,
   FirebaseAuthConsumer,
@@ -6,34 +13,28 @@ import {
 import "firebase/auth";
 import firebase from "firebase/app";
 import { config } from "../firebase/config";
-import HomePage from "../components/Homepage";
-import SignInComponent from "../components/SignInComponent";
-
 import Appbar from "../components/Appbar";
-
 function App() {
   return (
     <FirebaseAuthProvider {...config} firebase={firebase}>
-      <div>
-        <FirebaseAuthConsumer>
-          {({ isSignedIn, user, providerId }) => {
-            return (
-              <>
-                <Appbar />
-                {isSignedIn === false ? (
-                  <SignInComponent />
-                ) : (
-                  <HomePage
-                    isSignedIn={isSignedIn}
-                    user={user}
-                    providerId={providerId}
-                  />
-                )}
-              </>
-            );
-          }}
-        </FirebaseAuthConsumer>
-      </div>
+      <FirebaseAuthConsumer>
+        {({ isSignedIn, user, providerId }) => {
+          return (
+            <>
+              <Appbar />
+              {isSignedIn === false ? (
+                <AuthenticatePage />
+              ) : (
+                <HomePage
+                  isSignedIn={isSignedIn}
+                  user={user}
+                  providerId={providerId}
+                />
+              )}
+            </>
+          );
+        }}
+      </FirebaseAuthConsumer>
     </FirebaseAuthProvider>
   );
 }

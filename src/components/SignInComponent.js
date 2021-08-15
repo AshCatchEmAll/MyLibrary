@@ -1,67 +1,189 @@
-import React from "react";
+import React, { useState } from "react";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Link from "@material-ui/core/Link";
+import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 import firebase from "firebase/app";
 import "firebase/auth";
 import GoogleButton from "react-google-button";
-import { makeStyles, Grid, Paper, Button } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Copyright © "}
+      <Link color="inherit" href="https://material-ui.com/">
+        MyLibrary
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
 
 const useStyles = makeStyles((theme) => ({
-  center: {
+  root: {
     height: "100vh",
-    position: "relative",
-    // border: "3px solid green",
   },
-  centerChild: {
-    margin: 0,
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    msTransform: "translate(-50%, -50%)",
-    transform: "translate(-50%, -50%)",
+  image: {
+    backgroundImage: "url(https://source.unsplash.com/random)",
+    backgroundRepeat: "no-repeat",
+    backgroundColor:
+      theme.palette.type === "light"
+        ? theme.palette.grey[50]
+        : theme.palette.grey[900],
+    backgroundSize: "cover",
+    backgroundPosition: "center",
   },
-  anonymousButton: {
-    height: "50px",
+  paper: {
+    margin: theme.spacing(8, 4),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
   },
 }));
-function SignInComponent(props) {
-  const classes = useStyles();
 
+export default function SignInSide(props) {
+  const classes = useStyles();
+  let history = useHistory();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   function signInWithGoogle() {
     const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(googleAuthProvider);
   }
 
-  function signInAnonymously() {
-    firebase.auth().signInAnonymously();
+  async function signInWithEmail() {
+    try {
+      const userCredential = await firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password);
+      if (userCredential.user !== undefined || userCredential.user !== null) {
+        history.push("/");
+      } else {
+        console.log("Error login in user");
+      }
+    } catch (error) {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(error, errorMessage);
+    }
   }
 
+  function handleEmail(event) {
+    setEmail(event.target.value);
+  }
+
+  function handlePassword(event) {
+    setPassword(event.target.value);
+  }
   return (
-    <div className={classes.center}>
-      <Grid container className={classes.centerChild} spacing={2}>
-        <Grid item xs={12}>
-          <Grid container justify="center" spacing={2}>
-            <Grid key={1} item>
-              <Paper className={classes.paper}>
-                {" "}
-                <GoogleButton onClick={signInWithGoogle} type="dark" />
-              </Paper>
-            </Grid>
-            <Grid key={2} item>
-              <Paper className={classes.paper}>
-                <Button
-                  className={classes.anonymousButton}
-                  color="primary"
-                  variant="contained"
-                  onClick={signInAnonymously}
+    <Grid container component="main" className={classes.root}>
+      <CssBaseline />
+      <Grid item xs={false} sm={4} md={7} className={classes.image} />
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <div className={classes.form} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              value={email}
+              onChange={handleEmail}
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              value={password}
+              onChange={handlePassword}
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={signInWithEmail}
+            >
+              Sign In
+            </Button>
+
+            <Grid container>
+              <Grid item>
+                <Link
+                  href="#"
+                  variant="body2"
+                  onClick={props.handleChangeAuthState}
                 >
-                  Sign In Anonymously
-                </Button>
-              </Paper>
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
-        </Grid>
+            <Grid
+              item
+              xs={12}
+              justifyContent="center"
+              className={classes.paper}
+            >
+              <Typography> --- OR --- </Typography>
+            </Grid>
+
+            <Grid
+              item
+              xs={12}
+              justifyContent="center"
+              className={classes.paper}
+            >
+              <GoogleButton onClick={signInWithGoogle} type="dark" />
+            </Grid>
+            <Box mt={5}>
+              <Copyright />
+            </Box>
+          </div>
+        </div>
       </Grid>
-    </div>
+    </Grid>
   );
 }
-
-export default SignInComponent;

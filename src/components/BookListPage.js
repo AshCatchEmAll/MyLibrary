@@ -4,36 +4,21 @@ import "firebase/auth";
 import "firebase/firestore";
 import {
   makeStyles,
-  Typography,
-  CircularProgress,
-  Paper,
-  Fab,
+
   TextField,
   Button,
   Radio,
   Grid,
   FormControlLabel,
   RadioGroup,
-  Dialog,
-  DialogTitle,
-  List,
-  ListItem,
-  Avatar,
-  ListItemText,
-  ListItemAvatar,
+
 } from "@material-ui/core";
 import clsx from "clsx";
-import {
-  Add,
-  DeleteForever,
-  Navigation,
-  UpdateRounded,
-} from "@material-ui/icons";
 import db from "../firebase/firestore";
 import BookCard from "./BookCard";
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
+    
     width: 500,
     position: "relative",
     minHeight: 200,
@@ -68,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     right: theme.spacing(2),
   },
 }));
-function HomePage(props) {
+function BookListPage(props) {
   const classes = useStyles();
   const isSignedIn = props.isSignedIn;
   const user = props.user;
@@ -79,7 +64,7 @@ function HomePage(props) {
   const [bookName, setBookName] = useState("");
   const [authorName, setAuthorName] = useState("");
   const [open, setOpen] = useState(false);
-  const divClasses = clsx(classes.center, classes.root);
+ 
   async function getAllBooks() {
     if (isLoading === false) {
       setIsLoading(true);
@@ -115,9 +100,6 @@ function HomePage(props) {
     setAuthorName(event.target.value);
   }
 
-  function handleClose() {
-    setOpen(false);
-  }
 
   async function handleAddBook() {
     const createdAt = Date.now();
@@ -147,7 +129,7 @@ function HomePage(props) {
       className={classes.root}
       style={{ marginTop: "50px", marginLeft: "auto", marginRight: "auto" }}
     >
-      <Grid container spacing={2}>
+      <Grid container spacing={2} >
         <Grid item xs={12}>
           <Button
             variant="contained"
@@ -157,7 +139,8 @@ function HomePage(props) {
             Sign out
           </Button>
         </Grid>
-        <Grid item xs={6}>
+        
+        <Grid item xs={6}justifyContent="center" >
           <TextField
             id="filled-name"
             placeholder="Enter Title"
@@ -166,7 +149,7 @@ function HomePage(props) {
             value={bookName}
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={6} justifyContent="center">
           <TextField
             id="filled-name"
             placeholder="Enter Author name"
@@ -210,8 +193,7 @@ function HomePage(props) {
               user={props.user}
               element={element}
               refreshBooks={getAllBooks}
-              // open={handleBookClick}
-              // closeDialog={handleClose}
+             
             />
           );
         })}
@@ -220,4 +202,4 @@ function HomePage(props) {
   );
 }
 
-export default HomePage;
+export default BookListPage;
