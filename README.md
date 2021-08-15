@@ -25,8 +25,8 @@
 
 ## Display Shots
 
-<div align="center"><img src ="imageOne.png" width="600" height="400"></div><br/>
- <div align="center"> <img src ="imgO.jpg" width="600" height="550"> </div> <br/>  <div align="center">  <img src ="imgThree.jpg" width="600" height="250">   </div><br/> <div align="center">  <img src ="intro.jpg" width="600" height="110"></div> <br/>
+<div align="center"><img src ="1.jpg" width="600" height="400"></div><br/>
+ <div align="center"> <img src ="2.jpg" width="600" height="550"> </div> <br/>  <div align="center">  <img src ="3.jpg" width="600" height="250">   </div><br/> 
 
 ## Running the project
 1. Make Firebase project
