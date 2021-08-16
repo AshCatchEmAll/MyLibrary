@@ -14,14 +14,20 @@ import "firebase/auth";
 import firebase from "firebase/app";
 import { config } from "../firebase/config";
 import Appbar from "../components/Appbar";
+import RandomBookPage from "./RandomBookPage";
 function App() {
   return (
+    <Router>
+    <Appbar />
+    <Switch>
+    
+    <Route  path="/" exact>
     <FirebaseAuthProvider {...config} firebase={firebase}>
       <FirebaseAuthConsumer>
         {({ isSignedIn, user, providerId }) => {
           return (
             <>
-              <Appbar />
+              
               {isSignedIn === false ? (
                 <AuthenticatePage />
               ) : (
@@ -36,6 +42,12 @@ function App() {
         }}
       </FirebaseAuthConsumer>
     </FirebaseAuthProvider>
+    </Route>
+    <Route path="/randomBook">
+        <RandomBookPage/>
+    </Route>
+    </Switch>
+    </Router>
   );
 }
 export default App;
