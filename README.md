@@ -5,7 +5,7 @@
 
 
 
-<pre><div align="center"><img style="margin-right: 5px;" src="https://img.shields.io/badge/Python-3-brightgreen"/>  <img src="https://img.shields.io/badge/%20%20Uptime-99%25-orange"/> <img src="https://img.shields.io/badge/%20%20build-passing-green"/> <img src="https://img.shields.io/badge/%20%20contributers-1-informational"/> <img src="https://img.shields.io/badge/maintainability-A-yellow"/> <img src="https://img.shields.io/badge/golang-%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20-blue"/> <img src="https://img.shields.io/badge/node.js-14.15.5-success"/></div></pre> 
+<pre><div align="center"><img style="margin-right: 5px;" src="https://img.shields.io/badge/React-%20%20-blue"/> <img src="https://img.shields.io/badge/%20%20build-passing-green"/> <img src="https://img.shields.io/badge/%20%20contributers-2-informational"/> <img src="https://img.shields.io/badge/maintainability-A-yellow"/> <img src="https://img.shields.io/badge/Firebase-%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20-orange"/> <img src="https://img.shields.io/badge/MaterialUI-%20%20-purple"/></div></pre> 
 
 # Table of Content:
 - [Features](#features)
