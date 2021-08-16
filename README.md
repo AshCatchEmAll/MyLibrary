@@ -19,14 +19,19 @@
 - ✅ Add books to your reading list
 - ✅ Update books status from read to unread or unread to read
 - ✅ Delete books from your reading list
-- 🚧 Get random book recommendation
+- ✅ Get random book recommendation
+- 🚧 Efficient error handling
+- 🚧 Progress buttons for async events to give users feedback
 
 
 
 ## Display Shots
 
 <div align="center"><img src ="1.jpg" width="600" height="300"></div><br/>
- <div align="center"> <img src ="2.jpg" width="600" height="300"> </div> <br/>  <div align="center">  <img src ="3.jpg" width="600" height="300">   </div><br/> 
+ <div align="center"> <img src ="2.jpg" width="600" height="300"> </div> <br/>  
+ <div align="center">  <img src ="3.jpg" width="600" height="300">   </div><br/> 
+ <pre>Random Book recommendation</pre>
+ <div align="center"> <img src ="random.gif" width="600" height="300">   </div><br/> 
 
 ## Running the project
 1. Make Firebase project
