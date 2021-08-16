@@ -22,6 +22,7 @@
 - ✅ Get random book recommendation
 - 🚧 Efficient error handling
 - 🚧 Progress buttons for async events to give users feedback
+- 🚧 Add recommended book to the list
 
 
 
