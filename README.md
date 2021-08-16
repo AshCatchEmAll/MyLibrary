@@ -1,4 +1,5 @@
 
+<div align="center"  ><img src ="logo.png" width="200px" height="200px"></div><br/>
 <div align="center"><h1>MyLibrary</h1></div>
 <div align="center"><h3>Keep track of your reading list</h3></div>
 
