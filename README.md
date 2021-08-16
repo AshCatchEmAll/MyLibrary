@@ -5,7 +5,7 @@
 
 
 
-<pre><div align="center"><img style="margin-right: 5px;" src="https://img.shields.io/badge/Python-3-brightgreen"/>  <img src="https://img.shields.io/badge/%20%20Uptime-99%25-orange"/> <img src="https://img.shields.io/badge/%20%20build-passing-green"/> <img src="https://img.shields.io/badge/%20%20contributers-1-informational"/> <img src="https://img.shields.io/badge/maintainability-A-yellow"/> <img src="https://img.shields.io/badge/golang-%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20-blue"/> <img src="https://img.shields.io/badge/node.js-14.15.5-success"/> <img src="https://img.shields.io/badge/Discord.py-%20%20%20%20%20%20%20%20%20%20%20%20-9cf"/> </div></pre> 
+<pre><div align="center"><img style="margin-right: 5px;" src="https://img.shields.io/badge/Python-3-brightgreen"/>  <img src="https://img.shields.io/badge/%20%20Uptime-99%25-orange"/> <img src="https://img.shields.io/badge/%20%20build-passing-green"/> <img src="https://img.shields.io/badge/%20%20contributers-1-informational"/> <img src="https://img.shields.io/badge/maintainability-A-yellow"/> <img src="https://img.shields.io/badge/golang-%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20-blue"/> <img src="https://img.shields.io/badge/node.js-14.15.5-success"/></div></pre> 
 
 # Table of Content:
 - [Features](#features)
@@ -26,11 +26,13 @@
 
 
 ## Display Shots
-
+ <pre align="center">Login page, generates random pic everytime</pre>
 <div align="center"><img src ="1.jpg" width="600" height="300"></div><br/>
+ <pre align="center">Signup page</pre>
  <div align="center"> <img src ="2.jpg" width="600" height="300"> </div> <br/>  
+  <pre align="center">Home page: Add,delete and update book records</pre>
  <div align="center">  <img src ="3.jpg" width="600" height="300">   </div><br/> 
- <pre>Random Book recommendation</pre>
+ <pre align="center">Random Book recommendation</pre>
  <div align="center"> <img src ="random.gif" width="600" height="300">   </div><br/> 
 
 ## Running the project
