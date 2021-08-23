@@ -2,8 +2,8 @@ import "../App.css";
 
 import "firebase/auth";
 
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import BookListPage from "../components/BookListPage";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
 import AuthenticatePage from "./AuthenticatePage";
 import HomePage from "./Homepage";
 import {
@@ -16,9 +16,11 @@ import { config } from "../firebase/config";
 import Appbar from "../components/Appbar";
 import RandomBookPage from "./RandomBookPage";
 function App() {
+
   return (
+
     <Router>
-    <Appbar />
+    <Appbar/>
     <Switch>
     
     <Route  path="/" exact>
@@ -48,6 +50,7 @@ function App() {
     </Route>
     </Switch>
     </Router>
+
   );
 }
 export default App;

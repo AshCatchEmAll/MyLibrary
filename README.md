@@ -8,6 +8,8 @@
 
 <pre><div align="center"><img style="margin-right: 5px;" src="https://img.shields.io/badge/React-%20%20-blue"/> <img src="https://img.shields.io/badge/%20%20build-passing-green"/> <img src="https://img.shields.io/badge/%20%20contributers-2-informational"/> <img src="https://img.shields.io/badge/maintainability-A-yellow"/> <img src="https://img.shields.io/badge/Firebase-%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20-orange"/> <img src="https://img.shields.io/badge/MaterialUI-%20%20-purple"/></div></pre> 
 
+<pre><div align="center"><a href="https://my-library-c0d2a.web.app" >Checkout the project here</a></div></pre>
+
 # Table of Content:
 - [Features](#features)
 - [Display Shots](#display-shots)
@@ -21,9 +23,9 @@
 - ✅ Update books status from read to unread or unread to read
 - ✅ Delete books from your reading list
 - ✅ Get random book recommendation
-- 🚧 Efficient error handling
-- 🚧 Progress buttons for async events to give users feedback
-- 🚧 Add recommended book to the list
+- ✅ Error handling
+- ✅ Progress buttons for async events to give users feedback
+- ✅ Feature to add recommended book to the list
 
 
 

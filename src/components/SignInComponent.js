@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
+
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -16,6 +16,9 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import GoogleButton from "react-google-button";
 import { useHistory } from "react-router-dom";
+import ProgressButton from "../components/ProgressButton";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -27,6 +30,10 @@ function Copyright() {
       {"."}
     </Typography>
   );
+}
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -67,9 +74,25 @@ export default function SignInSide(props) {
   let history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [open, setOpen] = React.useState(false);
+  const [error, setError] = useState("");
+
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
   function signInWithGoogle() {
-    const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(googleAuthProvider);
+    try {
+      const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(googleAuthProvider);
+    } catch (e) {
+      setError(e);
+      setOpen(true)
+    }
   }
 
   async function signInWithEmail() {
@@ -83,9 +106,10 @@ export default function SignInSide(props) {
         console.log("Error login in user");
       }
     } catch (error) {
-      var errorCode = error.code;
+     
       var errorMessage = error.message;
-      console.log(error, errorMessage);
+      setError(errorMessage);
+      setOpen(true)
     }
   }
 
@@ -97,93 +121,99 @@ export default function SignInSide(props) {
     setPassword(event.target.value);
   }
   return (
-    <Grid container component="main" className={classes.root}>
-      <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <div className={classes.form} noValidate>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              value={email}
-              onChange={handleEmail}
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              value={password}
-              onChange={handlePassword}
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={signInWithEmail}
-            >
-              Sign In
-            </Button>
+    <>
+      <Grid container component="main" className={classes.root}>
+        <CssBaseline />
+        <Grid item xs={false} sm={4} md={7} className={classes.image} />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <div className={classes.form} noValidate>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                value={email}
+                onChange={handleEmail}
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                value={password}
+                onChange={handlePassword}
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <ProgressButton
+                type="submit"
+                fullWidth={true}
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                buttonText={"Sign in"}
+                onClick={signInWithEmail}
+              />
 
-            <Grid container>
-              <Grid item>
-                <Link
-                  href="#"
-                  variant="body2"
-                  onClick={props.handleChangeAuthState}
-                >
-                  {"Don't have an account? Sign Up"}
-                </Link>
+              <Grid container>
+                <Grid item>
+                  <Link
+                    href="#"
+                    variant="body2"
+                    onClick={props.handleChangeAuthState}
+                  >
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              justifyContent="center"
-              className={classes.paper}
-            >
-              <Typography> --- OR --- </Typography>
-            </Grid>
+              <Grid
+                item
+                xs={12}
+                justifyContent="center"
+                className={classes.paper}
+              >
+                <Typography> --- OR --- </Typography>
+              </Grid>
 
-            <Grid
-              item
-              xs={12}
-              justifyContent="center"
-              className={classes.paper}
-            >
-              <GoogleButton onClick={signInWithGoogle} type="dark" />
-            </Grid>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
+              <Grid
+                item
+                xs={12}
+                justifyContent="center"
+                className={classes.paper}
+              >
+                <GoogleButton onClick={signInWithGoogle} type="dark" />
+              </Grid>
+              <Box mt={5}>
+                <Copyright />
+              </Box>
+            </div>
           </div>
-        </div>
+        </Grid>
       </Grid>
-    </Grid>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error">
+          {error === "" ? "Something went wrong, Please try again" : error}
+        </Alert>
+      </Snackbar>
+    </>
   );
 }

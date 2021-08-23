@@ -1,37 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   makeStyles,
   Typography,
-  CircularProgress,
-  Paper,
-  Fab,
-  TextField,
-  Button,
-  Radio,
+ 
   Grid,
-  FormControlLabel,
-  RadioGroup,
-  Dialog,
-  DialogTitle,
-  List,
-  ListItem,
-  Avatar,
-  ListItemText,
-  ListItemAvatar,
+ 
 } from "@material-ui/core";
-import {
-  Add,
-  DeleteForever,
-  Navigation,
-  UpdateRounded,
-} from "@material-ui/icons";
+
 import db from "../firebase/firestore";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 
+import ProgressButton from "../components/ProgressButton";
 const useStyles = makeStyles((theme) => ({
   media: {
     height: 140,
@@ -74,9 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 function BookCard(props) {
- 
   const classes = useStyles();
- 
 
   async function handleBookUpdateClick() {
     console.log(props.element["createdAt"], props.element["name"]);
@@ -87,7 +67,6 @@ function BookCard(props) {
         read: !props.element["read"],
       });
     await props.refreshBooks();
-   
   }
 
   async function handleDeleteBook() {
@@ -97,10 +76,8 @@ function BookCard(props) {
       .doc(props.element["createdAt"].toString())
       .delete();
     await props.refreshBooks();
-   
   }
 
-  
   console.log(props.element);
   return (
     <>
@@ -111,9 +88,7 @@ function BookCard(props) {
         md={6}
         spacing={3}
         alignItems="center"
-        
       >
-    
         <MediaCard
           handleBookUpdateClick={handleBookUpdateClick}
           handleDeleteBook={handleDeleteBook}
@@ -122,7 +97,6 @@ function BookCard(props) {
           read={props.element["read"]}
         />
       </Grid>
-      
     </>
   );
 }
@@ -138,21 +112,26 @@ function MediaCard(props) {
             {props.authorName}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {props.read === true? "Read": "Unread"}
+            {props.read === true ? "Read" : "Unread"}
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary" onClick={props.handleDeleteBook}>
-          Delete
-        </Button>
-        <Button
+        <ProgressButton
+          progressSize="20px"
+          size="small"
+          color="primary"
+          onClick={props.handleDeleteBook}
+          buttonText={"Delete"}
+        />
+
+        <ProgressButton
+          progressSize="20px"
           size="small"
           color="primary"
           onClick={props.handleBookUpdateClick}
-        >
-          Update status
-        </Button>
+          buttonText={"Update status"}
+        />
       </CardActions>
     </Card>
   );

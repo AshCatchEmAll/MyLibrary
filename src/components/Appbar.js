@@ -9,6 +9,7 @@ import {
 import firebase from "firebase/app";
 import "firebase/auth";
 import { useHistory } from "react-router-dom";
+import { Box } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
-  button:{
+  button: {
     position: "absolute",
     right: "50px",
     padding: "15px",
@@ -28,20 +29,22 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    
-  }
+  },
 }));
 
 function Appbar() {
   const classes = useStyles();
   const [signedIn, setSignedIn] = useState(false);
-  const history = useHistory()
+  const history = useHistory();
+  function signOut() {
+    firebase.auth().signOut();
+    setSignedIn(false);
+  }
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
+      if (user != undefined || user != null) {
         var uid = user.uid;
         setSignedIn(true);
-        return <Button>Log out</Button>;
       } else {
         setSignedIn(false);
       }
@@ -53,17 +56,27 @@ function Appbar() {
         <Typography variant="h6" className={classes.title}>
           My Library
         </Typography>
-        {signedIn ?? <Button>Logout</Button>}
+        {signedIn == true ? (
+          <Button
+            size="small"
+            color="inherit"
+            variant="outlined"
+            style={{margin:"15px"}}
+            onClick={() => history.push("/randomBook")}
+          >
+            Randomizer
+          </Button>
+        ) : (
+          <Box />
+        )}
+        {signedIn == true ? (
+          <Button size="small" color="secondary" variant="contained" onClick={signOut}>
+            Logout
+          </Button>
+        ) : (
+          <Box />
+        )}
       </Toolbar>
-      <Button
-      size="small"
-      
-        color="inherit"
-      className={classes.button}
-      onClick={()=>history.push("/randomBook")}
-      >
-        Randomizer
-      </Button>
     </AppBar>
   );
 }

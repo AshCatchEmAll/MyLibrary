@@ -13,9 +13,10 @@ import {
   RadioGroup,
 
 } from "@material-ui/core";
-import clsx from "clsx";
+
 import db from "../firebase/firestore";
 import BookCard from "./BookCard";
+import ProgressButton from "./ProgressButton";
 const useStyles = makeStyles((theme) => ({
   root: {
     
@@ -86,8 +87,8 @@ function BookListPage(props) {
     setIsLoading(false);
   }
 
-  useEffect(async () => {
-    await getAllBooks();
+  useEffect(() => {
+    getAllBooks();
   }, []);
 
   function signOut() {
@@ -178,25 +179,26 @@ function BookListPage(props) {
           </Grid>
         </RadioGroup>
         <Grid item xs={12}>
-          <Button
+          <ProgressButton
             variant="contained"
             color="primary"
             onClick={handleAddBook}
-            style={{ width: "100%" }}
-          >
-            Add Book
-          </Button>
+            fullWidth={true}
+            buttonText="Add Book"
+          />
+            
+    
         </Grid>
-        {books.map((element) => {
-          return (
+        {books.map((element) => 
+          
             <BookCard
               user={props.user}
               element={element}
               refreshBooks={getAllBooks}
              
             />
-          );
-        })}
+        
+        )}
       </Grid>
     </div>
   );

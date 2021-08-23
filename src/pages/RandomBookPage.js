@@ -1,20 +1,26 @@
 import React, { useState } from "react";
 
-import Button from "@material-ui/core/Button";
+
 import Card from "@material-ui/core/Card";
 
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
-
+import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
-const axios = require('axios');
+import ProgressButton from "../components/ProgressButton";
+import db from "../firebase/firestore";
+import firebase from "firebase";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+const axios = require("axios");
 var randomWords = require("random-words");
+
 const useStyles = makeStyles((theme) => ({
   "@global": {
     ul: {
@@ -61,35 +67,52 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 export default function RandomBookPage() {
   const classes = useStyles();
   const [book, setBook] = useState("");
+  const [open, setOpen] = useState(false);
+  const handleClick = () => {
+    setOpen(true);
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   async function getRandomBook() {
     try {
       const searchTerm = randomWords();
       const url = "https://www.googleapis.com/books/v1/volumes?q=" + searchTerm;
 
-      const response = await axios.get(
-       url
-      );
-      if(response.data.items!="undefined"||response.data.items!=null){
-
-          const random = Math.floor(Math.random() * response.data.items.length);
-          const b = {"name":response.data.items[random].volumeInfo.title,
-            "author ":JSON.stringify(response.data.items[random].volumeInfo.authors[0]),
-            "desc":response.data.items[random].volumeInfo.description,
-            "infoLink":response.data.items[random].volumeInfo.infoLink
+      const response = await axios.get(url);
+      if (response.data.items !== "undefined" || response.data.items !== null) {
+        const random = Math.floor(Math.random() * response.data.items.length);
+        const b = {
+          name: response.data.items[random].volumeInfo.title,
+          author: JSON.stringify(
+            response.data.items[random].volumeInfo.authors[0]
+          ),
+          desc: response.data.items[random].volumeInfo.description,
+          infoLink: response.data.items[random].volumeInfo.infoLink,
         };
-        console.log(response.data.items[random].volumeInfo)
-        setBook(b)
+        console.log(response.data.items[random].volumeInfo);
+        setBook(b);
       }
     } catch (error) {
       console.error(error);
     }
   }
-  function textEllipsis(str, maxLength, { side = "end", ellipsis = "..." } = {}) {
+  function textEllipsis(
+    str,
+    maxLength,
+    { side = "end", ellipsis = "..." } = {}
+  ) {
     if (str.length > maxLength) {
       switch (side) {
         case "start":
@@ -100,6 +123,25 @@ export default function RandomBookPage() {
       }
     }
     return str;
+  }
+  async function handleAddBook() {
+    const createdAt = Date.now();
+    let user = firebase.auth().currentUser;
+
+    if (user.uid !== undefined) {
+      try {
+        await db.collection("/Books").doc(createdAt.toString()).set({
+          owner: user.uid,
+          name: book["name"],
+          authorName: book["author"],
+          read: false,
+          createdAt: createdAt,
+        });
+        handleClick();
+      } catch (e) {
+        console.log("ERROR adding random book ", e.message);
+      }
+    }
   }
   return (
     <React.Fragment>
@@ -122,16 +164,16 @@ export default function RandomBookPage() {
           color="textSecondary"
           component="p"
         >
-          Click the 📙 Button and get a random book suggestion !
-          You can click on the card to get more info 🌻
+          Click the 📙 Button and get a random book suggestion ! You can click
+          on the MORE button to get more info 🌻
         </Typography>
       </Container>
       {/* End hero unit */}
       <Container maxWidth="md" component="main">
         <Grid container spacing={5} alignItems="center" justifyContent="center">
           <Grid item xs={12} sm={12} md={4}>
-            {book !== '' ? (
-              <Card onClick={()=> window.open(book["infoLink"])} style={{cursor:"pointer"}}>
+            {book !== "" ? (
+              <Card style={{ cursor: "pointer" }}>
                 <CardHeader
                   title={book["name"]}
                   subheader={book["author"]}
@@ -146,30 +188,51 @@ export default function RandomBookPage() {
                       variant="h6"
                       color="textSecondary"
                     >
-                      {
-                          
-                        book["desc"]===undefined?"": textEllipsis(book["desc"],200)}
+                      {book["desc"] === undefined
+                        ? ""
+                        : textEllipsis(book["desc"], 200)}
                     </Typography>
                   </div>
-                  {/* <ul>
-                    {tier.description.map((line) => (
-                      <Typography component="li" variant="subtitle1" align="center" key={line}>
-                        {line}
-                      </Typography>
-                    ))}
-                  </ul> */}
+                  <CardActions>
+                    <ProgressButton
+                      progressSize="30px"
+                      fullWidth={true}
+                      variant="outlined"
+                      color="secondary"
+                      onClick={handleAddBook}
+                      buttonText={"Add"}
+                    />
+                    <ProgressButton
+                      progressSize="30px"
+                      fullWidth={true}
+                      variant="outlined"
+                      color="secondary"
+                      onClick={() => window.open(book["infoLink"])}
+                      buttonText={"More"}
+                    />
+                  </CardActions>
                 </CardContent>
               </Card>
             ) : (
               <Box />
             )}
             <Box height={50} />
-            <Button fullWidth variant="contained" color="primary" onClick={getRandomBook}>
-              📙
-            </Button>
+            <ProgressButton
+              progressSize="30px"
+              fullWidth={true}
+              variant="contained"
+              color="primary"
+              onClick={getRandomBook}
+              buttonText={"📙"}
+            />
           </Grid>
         </Grid>
       </Container>
+      <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+         Book added to your reading list
+        </Alert>
+      </Snackbar>
       {/* Footer */}
       {/* <Container maxWidth="md" component="footer" className={classes.footer}>
         <Grid container spacing={4} justifyContent="space-evenly">
